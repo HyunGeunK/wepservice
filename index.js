@@ -7,7 +7,7 @@ const openai = new OpenAI({
 async function createImage(){
     const response = await openai.images.generate({
         model: "dall-e-3",
-        prompt: "",
+        prompt: "a cute cat",
         n: 1,
         size: "1024x1024",
     });
@@ -15,4 +15,3 @@ async function createImage(){
     console.log(image_url); 
 }
 createImage();
-
