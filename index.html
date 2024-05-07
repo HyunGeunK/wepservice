@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지생성기</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #555;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>달리3를 사용한 이미지 생성기입니다.</h1>
+        <form id="promptForm">
+            <label for="prompt">텍스트를 입력해주세요:</label><br>
+            <textarea id="prompt" name="prompt" rows="4" cols="50"></textarea><br>
+            <button type="submit">이미지 생성</button>
+        </form>
+        <div id="imageContainer"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const promptForm = document.getElementById('promptForm');
+            const imageContainer = document.getElementById('imageContainer');
+
+            promptForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const prompt = promptForm.prompt.value;
+
+                try {
+                    const response = await fetch('/generate-image', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ prompt })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to generate image');
+                    }
+
+                    const data = await response.json();
+                    const imageUrl = data.imageUrl;
+                    displayImage(imageUrl);
+                } catch (error) {
+                    console.error('Error:', error.message);
+                }
+            });
+
+            function displayImage(imageUrl) {
+                imageContainer.innerHTML = `<img src="${imageUrl}" alt="Generated Image">`;
+            }
+        });
+    </script>
+</body>
+</html>
