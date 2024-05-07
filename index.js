@@ -4,7 +4,7 @@ const OpenAI = require('openai'); // openai 모듈 사용
 require('dotenv').config(); // 키 암호화용 모듈
 
 const app = express(); // 익스프레스 애플리케이션 생성
-const port = 3000; // 서버 포트
+const port = 80; // 서버 포트
 
 const openai = new OpenAI({ // OpenAI 클라이언트 생성
     apiKey: process.env.OPENAI_API_KEY, // OpenAI API 키
